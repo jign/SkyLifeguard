@@ -28,7 +28,7 @@ This library uses a lot of macros that compile down to noops in shipping builds.
 
 ### Class Invariants
 
-The `CLASS_INVARIANTS(Obj)` macro checks if the given object passes the class invariants checks. A class invariant is any member UPROPERTY that must be valid for the object to be in a valid state. Not all members of a class with a contract may be invariant, as it may be perfectly valid for some to be null or in an unset state.
+The `LG_CLASS_INVARIANTS(Obj)` macro checks if the given object passes the class invariants checks. A class invariant is any member UPROPERTY that must be valid for the object to be in a valid state. Not all members of a class with a contract may be invariant, as it may be perfectly valid for some to be null or in an unset state.
 
 All properties with the tag meta=(Invariant) must be valid. Invariants can be of the following types. If you need custom validity checks use custom invariant functions.
 
@@ -81,7 +81,7 @@ protected:
 
     virtual void BeginPlay() override {
         Super::BeginPlay();
-        CLASS_INVARIANTS(this); // Validates all the above in one line
+        LG_CLASS_INVARIANTS(this); // Validates all the above in one line
     }
 
 private:
@@ -143,7 +143,7 @@ After
 APawn* ASkyGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* NewPlayer,
     const FTransform& SpawnTransform)
 {
-    PRECOND(NewPlayer)
+    LG_PRECOND(NewPlayer)
     LG_SCOPED_CHECKLIST_STEP(FSkyGameModeInitChecklist::ChecklistName, FSkyGameModeInitChecklist::SpawnPawn);
     
     UE_LOG(LogSkyInitialization, Log, TEXT("%hs -- spawning default pawn at transform"), __FUNCTION__);
@@ -154,13 +154,13 @@ APawn* ASkyGameMode::SpawnDefaultPawnAtTransform_Implementation(AController* New
     SpawnInfo.bDeferConstruction = true;
 
     const auto PawnClass = GetDefaultPawnClassForController(NewPlayer);
-    INVARIANT(PawnClass);
+    LG_INVARIANT(PawnClass);
     const auto SpawnedPawn = GetWorld()->SpawnActor<APawn>(PawnClass, SpawnTransform, SpawnInfo);
-    INVARIANT(SpawnedPawn);
+    LG_INVARIANT(SpawnedPawn);
     const auto PawnExtComp = USkyPawnExtensionComp::FindPawnExtensionComponent(SpawnedPawn)
-    INVARIANT(PawnExtComp);
+    LG_INVARIANT(PawnExtComp);
     const auto PawnData = GetPawnDataForController(NewPlayer)
-    INVARIANT(PawnData);
+    LG_INVARIANT(PawnData);
     
     UE_LOG(LogSkyInitialization, Log, TEXT("%hs started spawning pawn"), __FUNCTION__);
     
@@ -275,7 +275,7 @@ for (const auto& Checklist : Checklists) {
     LG_SCOPED_CHECKLIST_STEP(FDogmaInitEnginesChecklist::ChecklistName, FDogmaInitEnginesChecklist::InitDomi);
     
     const auto DomiSys = GameInstance->GetSubsystem<UDomiSys>();
-    INVARIANT(DomiSys)
+    LG_INVARIANT(DomiSys)
     
     const auto DomiInitData = WorldTemplate->DomiInitData.LoadSynchronous();
     const auto DomiInitializer = NewObject<UDomiInitializer>();

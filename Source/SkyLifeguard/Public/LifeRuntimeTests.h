@@ -5,7 +5,7 @@
 #include "GameplayTagContainer.h"
 
 #if DO_CHECK
-#define TEST_TAG_ISA(Tag, Parent) {TEST_CHECK(LifeRuntimeTest::CheckTagIsA(Tag, Parent));}
+#define TEST_TAG_ISA(Tag, Parent) {LG_TEST_CHECK(LifeRuntimeTest::CheckTagIsA(Tag, Parent));}
 #else
 #define TEST_TAG_ISA(Tag, Parent)
 #endif

@@ -170,7 +170,7 @@ struct FLifeChecklistRegistry
 	/** Mark the named checklist as done. */
     void SetChecklistDone(const FName& ChecklistName)
     {
-		PRECOND(Checklists.Find(ChecklistName))
+		LG_PRECOND(Checklists.Find(ChecklistName))
 		
         FLifeChecklistState* State = Checklists.Find(ChecklistName);
         State->bIsDone = true;

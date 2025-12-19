@@ -2,18 +2,18 @@
 
 #include "Misc/ScopeExit.h"
 
-#define TEST_CHECK(Expr) checkf((Expr), TEXT("Test failure: [%s] @ [%hs:%d]"), TEXT(#Expr), __FUNCTION__, __LINE__)
-#define CONTRACT_CHECK(Expr) checkf((Expr), TEXT("Architecture violation: [%s] @ [%hs:%d]"), TEXT(#Expr), __FUNCTION__, __LINE__)
+#define LG_TEST_CHECK(Expr) checkf((Expr), TEXT("Test failure: [%s] @ [%hs:%d]"), TEXT(#Expr), __FUNCTION__, __LINE__)
+#define LG_CONTRACT_CHECK(Expr) checkf((Expr), TEXT("Architecture violation: [%s] @ [%hs:%d]"), TEXT(#Expr), __FUNCTION__, __LINE__)
 #define LG_CONTRACT_CHECK_MSG(Expr, Msg) checkf((Expr), TEXT("Contract violation (%s): [%s] @ [%hs:%d]"), *FString(Msg), TEXT(#Expr), __FUNCTION__, __LINE__)
 
 /**
  * Check a precondition: something that should be true at the beginning of some scope.
  */
-#define PRECOND(Expr) LG_CONTRACT_CHECK_MSG(Expr, "Precondition")
+#define LG_PRECOND(Expr) LG_CONTRACT_CHECK_MSG(Expr, "Precondition")
 /**
  * Check a postcondition: something that should be true at the end of some scope.
  */
-#define POSTCOND(Expr) LG_CONTRACT_CHECK_MSG(Expr, "Postcondition")
+#define LG_POSTCOND(Expr) LG_CONTRACT_CHECK_MSG(Expr, "Postcondition")
 
 /**
  * POSTCOND_SCOPE
@@ -24,24 +24,24 @@
  * * Note: This captures context by reference. It checks the value of 'Expr' 
  * at the MOMENT OF EXIT, not at the moment of declaration.
  */
-#define SCOPE_POSTCOND(Expr) \
+#define LG_SCOPE_POSTCOND(Expr) \
 	ON_SCOPE_EXIT \
 	{ \
-		POSTCOND(Expr); \
+		LG_POSTCOND(Expr); \
 	};
 
 /**
  * Check an invariant for some object
  * @param Expr The UObject for which we want to check all the invariants.
  */
-#define INVARIANT(Expr) LG_CONTRACT_CHECK_MSG(Expr, "Invariant")
+#define LG_INVARIANT(Expr) LG_CONTRACT_CHECK_MSG(Expr, "Invariant")
 /**
  * Check an architectural condition. Something that was promised to us by some third party (like Epic when using engine
  * classes).
  *
  * Not a part of the traditional DbC paradigm but used to check things we have no control over but should be true.
  */
-#define ARCHCOND(Expr) LG_CONTRACT_CHECK_MSG(Expr, "Architecture")
+#define LG_ARCHCOND(Expr) LG_CONTRACT_CHECK_MSG(Expr, "Architecture")
 
 #if DO_CHECK
 /**
@@ -86,9 +86,9 @@
  *
  * @param Object - The object with an invariant contract. 
  */
-#define CLASS_INVARIANTS(Object) Debug::CheckClassInvariants(Object);
+#define LG_CLASS_INVARIANTS(Object) Debug::CheckClassInvariants(Object);
 #else
-#define CLASS_INVARIANTS(Object)
+#define LG_CLASS_INVARIANTS(Object)
 #endif
 
 /**
@@ -97,8 +97,8 @@
  * @param Object A pointer to check
  */
 #define PRECOND_DEEPCHK(Object) \
-	PRECOND(Object) \
-	CLASS_INVARIANTS(Object)
+	LG_PRECOND(Object) \
+	LG_CLASS_INVARIANTS(Object)
 
 namespace Debug
 {

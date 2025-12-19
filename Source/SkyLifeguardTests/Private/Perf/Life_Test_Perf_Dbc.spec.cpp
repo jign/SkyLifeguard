@@ -33,7 +33,7 @@ void FLife_Test_Perf_Dbc_Spec::Define()
 
             for (int32 i = 0; i < Iterations; ++i)
             {
-                CLASS_INVARIANTS(Obj);
+                LG_CLASS_INVARIANTS(Obj);
             }
 
             double EndTime = FPlatformTime::Seconds();

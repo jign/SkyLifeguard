@@ -162,7 +162,7 @@ namespace Debug
 
 	void Debug::CheckClassInvariants(const UObject* Object)
 	{
-		PRECOND(Object);
+		LG_PRECOND(Object);
 
 		UClass* Class = Object->GetClass();
 		const FString ClassName = Class->GetName();
